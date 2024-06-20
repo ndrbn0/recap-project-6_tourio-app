@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { StyledButton } from "./StyledButton.js";
+import { useRouter } from "next/router";
 
 const FormContainer = styled.form`
   display: grid;
@@ -25,15 +26,18 @@ const Label = styled.label`
 `;
 
 export default function Form({ onSubmit, formName, defaultData }) {
-  function handleSubmit(event) {
+  const router = useRouter();
+
+  async function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
-    onSubmit(data);
+    await onSubmit(data);
+    router.push("/");
   }
 
   return (
-    <FormContainer aria-labelledby={formName} onSubmit={handleSubmit}>
+    <FormContainer aria-labelledby={formName} onSubmit={onSubmit}>
       <Label htmlFor="name">Name</Label>
       <Input
         id="name"
