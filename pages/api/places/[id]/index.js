@@ -1,5 +1,5 @@
-import dbConnect from "@/db/connect";
 import Place from "@/db/models/Place";
+import dbConnect from "@/db/connect";
 
 export default async function handler(request, response) {
   await dbConnect();
@@ -13,5 +13,10 @@ export default async function handler(request, response) {
     }
 
     response.status(200).json(place);
+  }
+  if (request.method === "PATCH") {
+    const updatedPlace = request.body;
+    await Place.findByIdAndUpdate(id, updatedPlace);
+    return response.status(200).json({ status: "Place successfully updated." });
   }
 }
